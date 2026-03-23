@@ -25,11 +25,17 @@ COPY . .
 # Install PHP dependencies (skip scripts to avoid artisan not found error)
 RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
 
+# Create a default .env file for the build
+RUN cp .env.example .env
+
 # Generate application key
-RUN php artisan key:generate --env=production
+RUN php artisan key:generate
 
 # Now run composer scripts
 RUN composer run-script post-autoload-dump
+
+# Clean up temporary .env file
+RUN rm .env
 
 # Expose port
 EXPOSE 8080
