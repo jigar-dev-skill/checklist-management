@@ -200,12 +200,13 @@ const getErrors = () => {
 /**
  * Export all utilities
  */
-export default {
+const debuggerUtils = {
   logger,
   withErrorHandling,
   getErrors,
   storeError,
 };
 
+export default debuggerUtils;
 export { logger, withErrorHandling, getErrors, storeError };
 
