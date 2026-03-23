@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Card, Checkbox, Radio, Select, DatePicker, message } from 'antd';
 import { checklistAPI, templateAPI } from '../services';
+import { logger } from '../utils/debugger';
 
 const DynamicChecklistForm = ({ checklistId, templateId, onSubmit }) => {
   const [form] = Form.useForm();
@@ -9,20 +10,23 @@ const DynamicChecklistForm = ({ checklistId, templateId, onSubmit }) => {
   const [formFields, setFormFields] = useState([]);
 
   useEffect(() => {
+    const fetchTemplate = async () => {
+      try {
+        logger.info('Fetching template', { templateId });
+        const response = await templateAPI.get(templateId);
+        setTemplate(response.data);
+        setFormFields(response.data.fields || []);
+        logger.success('Template loaded successfully');
+      } catch (error) {
+        logger.error('Failed to fetch template', error);
+        message.error('Failed to fetch template');
+      }
+    };
+
     if (templateId) {
       fetchTemplate();
     }
-  }, [templateId, fetchTemplate]);
-
-  const fetchTemplate = async () => {
-    try {
-      const response = await templateAPI.get(templateId);
-      setTemplate(response.data);
-      setFormFields(response.data.fields || []);
-    } catch (error) {
-      message.error('Failed to fetch template');
-    }
-  };
+  }, [templateId]);
 
   const renderField = (field) => {
     const key = `field_${field.id}`;
