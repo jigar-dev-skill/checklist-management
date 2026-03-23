@@ -25,11 +25,12 @@ chmod -R 755 /app/public
 mkdir -p /etc/nginx/sites-enabled
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default || true
 
-# Run database migrations on startup if RUN_MIGRATIONS env var is set
-if [ "$RUN_MIGRATIONS" = "true" ]; then
+# Run database migrations if not already completed
+if [ ! -f /app/.migrations-done ]; then
     echo "Running database migrations..."
     cd /app
-    php artisan migrate --seed --force 2>&1 || echo "Migration step completed"
+    php artisan migrate --seed --force 2>&1 && touch /app/.migrations-done
+    echo "Database migrations completed"
 fi
 
 echo "Starting application..."
