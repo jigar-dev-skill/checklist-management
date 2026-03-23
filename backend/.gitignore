@@ -1,0 +1,16 @@
+# Backend (.gitignore)
+/node_modules
+/vendor
+.env
+.env.local
+.env.*.local
+*.log
+.DS_Store
+storage/
+bootstrap/cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+~*
+.phpunit.result.cache
