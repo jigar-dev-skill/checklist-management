@@ -25,5 +25,18 @@ chmod -R 755 /app/public
 mkdir -p /etc/nginx/sites-enabled
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default || true
 
+# Run database migrations on first startup
+if [ ! -f /app/.migrations-completed ]; then
+    echo "Running database migrations..."
+    cd /app
+    php artisan migrate --seed --force 2>&1
+    if [ $? -eq 0 ]; then
+        touch /app/.migrations-completed
+        echo "✓ Migrations completed successfully"
+    else
+        echo "✗ Migrations failed - attempting to continue"
+    fi
+fi
+
 echo "Starting application..."
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
