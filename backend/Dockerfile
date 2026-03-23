@@ -2,6 +2,8 @@ FROM php:8.1-fpm
 
 WORKDIR /app
 
+# Build cache bust: 2026-03-24-rebuild
+
 # Install system dependencies including Nginx
 RUN apt-get update && apt-get install -y \
     libpq-dev \
