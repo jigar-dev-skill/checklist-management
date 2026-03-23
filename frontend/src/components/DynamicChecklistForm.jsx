@@ -12,7 +12,7 @@ const DynamicChecklistForm = ({ checklistId, templateId, onSubmit }) => {
     if (templateId) {
       fetchTemplate();
     }
-  }, [templateId]);
+  }, [templateId, fetchTemplate]);
 
   const fetchTemplate = async () => {
     try {

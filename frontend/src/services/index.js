@@ -55,7 +55,7 @@ export const reportAPI = {
   exportExcel: (params) => api.get('/reports/export-excel', { params }),
 };
 
-export default {
+const apis = {
   authAPI,
   userAPI,
   patientAPI,
@@ -64,3 +64,5 @@ export default {
   dashboardAPI,
   reportAPI,
 };
+
+export default apis;

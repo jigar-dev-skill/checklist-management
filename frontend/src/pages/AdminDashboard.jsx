@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Statistic, LineChart, BarChart } from 'antd';
+import { Row, Col, Card, Statistic } from 'antd';
 import { UserOutlined, FileTextOutlined, CheckOutlined } from '@ant-design/icons';
 import { dashboardAPI } from '../services';
 

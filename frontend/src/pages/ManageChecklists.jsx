@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Table, Modal, Form, Input, Select, message, DatePicker } from 'antd';
+import { Button, Table, Modal, Form, Select, message } from 'antd';
 import { PlusOutlined, EditOutlined } from '@ant-design/icons';
 import { checklistAPI, templateAPI, patientAPI } from '../services';
 import DynamicChecklistForm from '../components/DynamicChecklistForm';
