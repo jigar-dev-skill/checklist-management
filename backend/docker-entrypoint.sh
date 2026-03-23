@@ -7,18 +7,23 @@ if [ ! -f /app/.env ]; then
     echo "Created .env from .env.example"
 fi
 
-# Ensure APP_KEY is set
-if ! grep -q "^APP_KEY=" /app/.env; then
-    php -r 'echo "APP_KEY=base64:" . base64_encode(random_bytes(32)) . PHP_EOL;' >> /app/.env
+# Generate APP_KEY if not set
+if ! grep -q "^APP_KEY=base64:" /app/.env; then
+    php /app/artisan key:generate --force 2>&1 || {
+        # Fallback: generate key manually if artisan fails
+        php -r 'echo "APP_KEY=base64:" . base64_encode(random_bytes(32)) . PHP_EOL;' >> /app/.env
+    }
     echo "Generated APP_KEY"
 fi
 
-# Create public directory if it doesn't exist
-mkdir -p /app/public
+# Run package discovery (skipped during build with --no-scripts)
+php /app/artisan package:discover --ansi 2>&1 || echo "Package discovery skipped"
+
+# Create necessary directories
+mkdir -p /app/storage/logs /app/storage/framework/cache/data /app/storage/framework/sessions /app/storage/framework/views /app/bootstrap/cache /app/public
 
 # Set permissions
-chmod -R 755 /app/storage
-chmod -R 755 /app/bootstrap/cache
+chmod -R 775 /app/storage /app/bootstrap/cache
 chmod -R 755 /app/public
 
 # Ensure Nginx sites-enabled has the config
