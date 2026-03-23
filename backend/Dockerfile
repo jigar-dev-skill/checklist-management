@@ -22,11 +22,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Copy application files
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --no-dev --no-interaction --prefer-dist
+# Install PHP dependencies (skip scripts to avoid artisan not found error)
+RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
 
 # Generate application key
 RUN php artisan key:generate --env=production
+
+# Now run composer scripts
+RUN composer run-script post-autoload-dump
 
 # Expose port
 EXPOSE 8080
