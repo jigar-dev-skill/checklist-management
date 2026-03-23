@@ -27,7 +27,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --no-dev --no-interaction --prefer-dist --no-scripts
+RUN composer install --no-dev --no-interaction --prefer-dist
 
 # Create necessary directories
 RUN mkdir -p storage/logs bootstrap/cache public && chmod -R 775 storage bootstrap

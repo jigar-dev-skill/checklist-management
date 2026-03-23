@@ -28,8 +28,14 @@ ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default || tr
 # Run database migrations if not already completed
 if [ ! -f /app/.migrations-done ]; then
     echo "Running database migrations..."
-    php /app/artisan migrate --seed --force 2>&1 && touch /app/.migrations-done || echo "Migrations failed or completed"
-    echo "Database migrations status: done"
+    if php /app/artisan migrate --seed --force 2>&1; then
+        touch /app/.migrations-done
+        echo "✓ Database migrations completed successfully"
+    else
+        echo "✗ Database migrations failed"
+    fi
+else
+    echo "Database migrations already completed (skipping)"
 fi
 
 echo "Starting application..."
