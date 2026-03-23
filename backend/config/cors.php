@@ -1,8 +1,8 @@
 // Laravel API Service Provider Configuration
 return [
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', 'login'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000')],
+    'allowed_origins' => [env('FRONTEND_URL', '*')],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],
