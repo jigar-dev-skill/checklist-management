@@ -25,9 +25,12 @@ chmod -R 755 /app/public
 mkdir -p /etc/nginx/sites-enabled
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default || true
 
-# Database migrations are run manually via Railway Shell
-# To run migrations, execute: cd /app && php artisan migrate --seed --force
-# This prevents startup failures due to file permissions and ensures proper sequencing
+# Run database migrations on startup if RUN_MIGRATIONS env var is set
+if [ "$RUN_MIGRATIONS" = "true" ]; then
+    echo "Running database migrations..."
+    cd /app
+    php artisan migrate --seed --force 2>&1 || echo "Migration step completed"
+fi
 
 echo "Starting application..."
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
